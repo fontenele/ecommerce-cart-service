@@ -46,17 +46,17 @@ jobs:
 
       - name: 📦 Install PHP dependencies
         run: |
-          docker exec cart-service composer install --no-interaction --prefer-dist
+          docker exec --user root cart-service composer install --no-interaction --prefer-dist
 
       - name: ⚙️ Set up Laravel
         run: |
-          docker exec cart-service php artisan config:clear
-          docker exec cart-service php artisan key:generate --env=testing
-          docker exec cart-service php artisan migrate --env=testing --force
+          docker exec --user root cart-service php artisan config:clear
+          docker exec --user root cart-service php artisan key:generate --env=testing
+          docker exec --user root cart-service php artisan migrate --env=testing --force
 
       - name: 🧪 Run tests
         run: |
-          docker exec cart-service composer coverage
+          docker exec --user root cart-service composer coverage
 
       - name: 🧹 Shut down environment
         if: always()
