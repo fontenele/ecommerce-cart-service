@@ -20,10 +20,12 @@ jobs:
       - name: ⬇️ Checkout repository
         uses: actions/checkout@v3
 
-      - name: 🧳 Cache Composer dependencies
-        uses: actions/cache@v3
+      - name: 💾 Cache Composer dependencies
+        uses: actions/cache@v4
         with:
-          path: vendor
+          path: |
+            vendor
+            ~/.composer/cache
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
           restore-keys: ${{ runner.os }}-composer-
 
@@ -38,27 +40,32 @@ jobs:
       - name: ✅ Trust /var/www as safe Git directory
         run: docker exec --user root cart-service git config --system --add safe.directory /var/www
 
-      - name: 🔧 Fix vendor permissions
+      - name: 🔧 Fix Laravel directory permissions
         run: |
-          docker exec --user root cart-service mkdir -p /var/www/vendor
-          docker exec --user root cart-service mkdir -p /var/www/storage/logs /var/www/bootstrap/cache
-          docker exec --user root cart-service chown -R 1000:1000 /var/www/vendor /var/www/storage /var/www/bootstrap/cache
+          docker exec --user root cart-service bash -c "
+            mkdir -p /var/www/vendor /var/www/storage/logs /var/www/bootstrap/cache && \
+            chown -R 1000:1000 /var/www/vendor /var/www/storage /var/www/bootstrap/cache
+          "
 
       - name: 📦 Install PHP dependencies
-        run: |
-          docker exec --user root cart-service composer install --no-interaction --prefer-dist
+        run: docker exec cart-service composer install --no-interaction --prefer-dist
 
       - name: ⚙️ Set up Laravel
         run: |
-          docker exec --user root cart-service php artisan config:clear
-          docker exec --user root cart-service php artisan key:generate --env=testing
-          docker exec --user root cart-service php artisan migrate --env=testing --force
+          docker exec cart-service php artisan config:clear
+          docker exec cart-service php artisan key:generate --env=testing
+          docker exec cart-service php artisan migrate --env=testing --force
 
-      - name: 🧪 Run tests
+      - name: 🧪 Run tests with coverage and JUnit
         run: |
-          docker exec --user root -e XDEBUG_MODE=coverage cart-service composer coverage
+          docker exec -e XDEBUG_MODE=coverage cart-service composer coverage
 
-      - name: 📤 Upload test report
+      - name: 📁 Copy test and coverage reports from container
+        run: |
+          docker cp cart-service:/var/www/junit.xml ./junit.xml
+          docker cp cart-service:/var/www/coverage.xml ./coverage.xml
+
+      - name: 📤 Upload JUnit test report
         uses: actions/upload-artifact@v4
         with:
           name: junit-report
@@ -72,10 +79,12 @@ jobs:
           reporter: java-junit
           fail-on-error: true
 
-      - name: Upload coverage reports to Codecov
+      - name: ☁️ Upload coverage report to Codecov
         uses: codecov/codecov-action@v5
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
+          files: coverage.xml
+          fail_ci_if_error: true
 
       - name: 🧹 Shut down environment
         if: always()
