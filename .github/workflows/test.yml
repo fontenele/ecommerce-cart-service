@@ -59,7 +59,7 @@ jobs:
           docker exec --user root -e XDEBUG_MODE=coverage cart-service composer coverage
 
       - name: 📤 Upload test report
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: junit-report
           path: junit.xml
