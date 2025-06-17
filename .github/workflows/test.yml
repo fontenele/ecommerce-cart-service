@@ -71,14 +71,11 @@ jobs:
           name: junit-report
           path: phpunit.junit.xml
 
-      - name: 🧾 Publish test summary
+      - name: 🧾 Pretty test results
         if: github.event_name == 'push' || github.event_name == 'pull_request'
-        uses: dorny/test-reporter@v1
+        uses: EnricoMi/publish-unit-test-result-action@v2
         with:
-          name: Result
-          path: phpunit.junit.xml
-          reporter: java-junit
-          fail-on-error: true
+          files: phpunit.junit.xml
 
       - name: ☁️ Upload coverage report to Codecov
         uses: codecov/codecov-action@v5
