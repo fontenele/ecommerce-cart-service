@@ -58,6 +58,11 @@ jobs:
         run: |
           docker exec --user root -e XDEBUG_MODE=coverage cart-service composer test
 
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+
       - name: 🧹 Shut down environment
         if: always()
         run: docker compose down -v
