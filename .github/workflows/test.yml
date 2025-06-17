@@ -41,7 +41,8 @@ jobs:
       - name: 🔧 Fix vendor permissions
         run: |
           docker exec --user root cart-service mkdir -p /var/www/vendor
-          docker exec --user root cart-service chown -R 1000:1000 /var/www/vendor
+          docker exec --user root cart-service mkdir -p /var/www/storage/logs /var/www/bootstrap/cache
+          docker exec --user root cart-service chown -R 1000:1000 /var/www/vendor /var/www/storage /var/www/bootstrap/cache
 
       - name: 📦 Install PHP dependencies
         run: |
