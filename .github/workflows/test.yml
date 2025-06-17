@@ -36,7 +36,7 @@ jobs:
           sleep 10
 
       - name: ✅ Trust /var/www as safe Git directory
-        run: docker exec cart-service git config --global --add safe.directory /var/www
+        run: docker exec cart-service git config --system --add safe.directory /var/www
 
       - name: 📦 Install PHP dependencies
         run: |
