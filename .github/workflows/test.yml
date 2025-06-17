@@ -1,0 +1,55 @@
+name: Card Service Tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    name: 🧪 PHPUnit Tests
+    runs-on: ubuntu-latest
+
+    env:
+      POSTGRES_DB: ${{ secrets.DB }}
+      POSTGRES_USER: ${{ secrets.DB_USER }}
+      POSTGRES_PASSWORD: ${{ secrets.DB_PASSWORD }}
+
+    steps:
+      - name: ⬇️ Checkout repository
+        uses: actions/checkout@v3
+
+      - name: 🧳 Cache Composer dependencies
+        uses: actions/cache@v3
+        with:
+          path: vendor
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
+
+      - name: 🐳 Start Docker Compose
+        run: docker-compose up -d --build
+
+      - name: ⏱ Wait for database to be ready
+        run: |
+          echo "⏳ Waiting for database to accept connections..."
+          sleep 10
+
+      - name: 📦 Install PHP dependencies
+        run: |
+          docker exec -it cart-service composer install --no-interaction --prefer-dist
+
+      - name: ⚙️ Set up Laravel
+        run: |
+          docker exec -it cart-service cp .env.testing .env
+          docker exec -it cart-service php artisan config:clear
+          docker exec -it cart-service php artisan key:generate --env=testing
+          docker exec -it cart-service php artisan migrate --env=testing --force
+
+      - name: 🧪 Run tests
+        run: |
+          docker exec -it cart-service composer test
+
+      - name: 🧹 Shut down environment
+        if: always()
+        run: docker-compose down -v
