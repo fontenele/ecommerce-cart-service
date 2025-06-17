@@ -72,12 +72,12 @@ jobs:
           path: junit.xml
 
       - name: 🧾 Publish test summary
-        if: github.event_name == 'push'
+        if: github.event_name == 'push' || github.event_name == 'pull_request'
         uses: dorny/test-reporter@v1
         with:
-          name: PHPUnit Tests
+          name: Result
           path: junit.xml
-          reporter: java-junit
+          reporter: phpunit
           fail-on-error: true
 
       - name: ☁️ Upload coverage report to Codecov
