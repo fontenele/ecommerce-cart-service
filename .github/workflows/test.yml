@@ -50,7 +50,6 @@ jobs:
 
       - name: ⚙️ Set up Laravel
         run: |
-          docker exec cart-service cp .env.testing .env
           docker exec cart-service php artisan config:clear
           docker exec cart-service php artisan key:generate --env=testing
           docker exec cart-service php artisan migrate --env=testing --force
