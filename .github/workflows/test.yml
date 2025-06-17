@@ -38,6 +38,11 @@ jobs:
       - name: ✅ Trust /var/www as safe Git directory
         run: docker exec --user root cart-service git config --system --add safe.directory /var/www
 
+      - name: 🔧 Fix vendor permissions
+        run: |
+          docker exec --user root cart-service mkdir -p /var/www/vendor
+          docker exec --user root cart-service chown -R 1000:1000 /var/www/vendor
+
       - name: 📦 Install PHP dependencies
         run: |
           docker exec cart-service composer install --no-interaction --prefer-dist
