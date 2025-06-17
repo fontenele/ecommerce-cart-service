@@ -2,6 +2,9 @@ services:
     app:
         build:
             context: .
+            args:
+                NEW_RELIC_LICENSE_KEY: ${NEW_RELIC_LICENSE_KEY}
+                NEW_RELIC_APPNAME: CartService-Laravel
         container_name: cart-service
         restart: unless-stopped
         working_dir: /var/www
