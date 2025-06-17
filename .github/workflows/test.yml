@@ -62,22 +62,22 @@ jobs:
 
       - name: 📁 Copy test and coverage reports from container
         run: |
-          docker cp cart-service:/var/www/junit.xml ./junit.xml
+          docker cp cart-service:/var/www/junit.xml ./phpunit.junit.xml
           docker cp cart-service:/var/www/coverage.xml ./coverage.xml
 
       - name: 📤 Upload JUnit test report
         uses: actions/upload-artifact@v4
         with:
           name: junit-report
-          path: junit.xml
+          path: phpunit.junit.xml
 
       - name: 🧾 Publish test summary
         if: github.event_name == 'push' || github.event_name == 'pull_request'
         uses: dorny/test-reporter@v1
         with:
           name: Result
-          path: junit.xml
-          reporter: phpunit
+          path: phpunit.junit.xml
+          reporter: java-junit
           fail-on-error: true
 
       - name: ☁️ Upload coverage report to Codecov
