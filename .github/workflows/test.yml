@@ -56,7 +56,7 @@ jobs:
 
       - name: 🧪 Run tests
         run: |
-          docker exec --user root -e XDEBUG_MODE=coverage cart-service composer test
+          docker exec --user root -e XDEBUG_MODE=coverage cart-service composer coverage
 
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v5

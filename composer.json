@@ -57,7 +57,7 @@
         ],
         "coverage": [
             "@php artisan config:clear --ansi",
-            "XDEBUG_MODE=coverage ./vendor/bin/phpunit --coverage-clover=coverage.xml --coverage-html public/coverage"
+            "XDEBUG_MODE=coverage ./vendor/bin/phpunit --coverage-clover=coverage.xml --coverage-html public/coverage --log-junit junit.xml"
         ]
     },
     "extra": {
