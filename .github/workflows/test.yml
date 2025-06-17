@@ -35,6 +35,9 @@ jobs:
           echo "⏳ Waiting for database to accept connections..."
           sleep 10
 
+      - name: ✅ Trust /var/www as safe Git directory
+        run: docker exec cart-service git config --global --add safe.directory /var/www
+
       - name: 📦 Install PHP dependencies
         run: |
           docker exec cart-service composer install --no-interaction --prefer-dist
