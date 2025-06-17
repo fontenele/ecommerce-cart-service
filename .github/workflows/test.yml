@@ -48,7 +48,7 @@ jobs:
 
       - name: 🧪 Run tests
         run: |
-          docker exec cart-service composer test
+          docker exec cart-service composer coverage
 
       - name: 🧹 Shut down environment
         if: always()
