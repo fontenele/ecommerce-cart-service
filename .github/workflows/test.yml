@@ -28,7 +28,7 @@ jobs:
           restore-keys: ${{ runner.os }}-composer-
 
       - name: 🐳 Start Docker Compose
-        run: docker-compose up -d --build
+        run: docker compose up -d --build
 
       - name: ⏱ Wait for database to be ready
         run: |
@@ -52,4 +52,4 @@ jobs:
 
       - name: 🧹 Shut down environment
         if: always()
-        run: docker-compose down -v
+        run: docker compose down -v
