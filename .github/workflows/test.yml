@@ -59,7 +59,7 @@ jobs:
 
       - name: 🧪 Run tests with coverage and JUnit
         run: |
-          docker exec --user root -e XDEBUG_MODE=coverage cart-service composer coverage
+          docker exec --user root cart-service composer coverage
 
       - name: 📁 Copy test and coverage reports from container
         run: |

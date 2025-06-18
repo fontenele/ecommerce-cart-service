@@ -57,7 +57,7 @@
         ],
         "coverage": [
             "@php artisan config:clear --ansi",
-            "XDEBUG_MODE=coverage ./vendor/bin/phpunit --coverage-clover=coverage.xml --coverage-html public/coverage --log-junit junit.xml --testdox"
+            "XDEBUG_MODE=coverage php -d newrelic.enabled=false ./vendor/bin/phpunit --coverage-clover=coverage.xml --coverage-html public/coverage --log-junit junit.xml --testdox"
         ]
     },
     "extra": {
