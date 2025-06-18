@@ -1,0 +1,12 @@
+logs:
+  - name: nginx-access
+    file: /var/log/nginx/access.log
+    attributes:
+      logtype: nginx
+      source: nginx-access
+
+  - name: nginx-error
+    file: /var/log/nginx/error.log
+    attributes:
+      logtype: nginx
+      source: nginx-error

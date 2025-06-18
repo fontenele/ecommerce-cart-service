@@ -1,0 +1,12 @@
+integrations:
+  - name: nri-postgresql
+    env:
+      PG_HOST: ${PG_HOST}
+      PG_PORT: ${PG_PORT}
+      PG_USER: ${PG_USER}
+      PG_PASSWORD: ${PG_PASSWORD}
+      PG_DATABASE: ${PG_DATABASE}
+    labels:
+      env: development
+      role: database
+license_key: ${NRIA_LICENSE_KEY}
