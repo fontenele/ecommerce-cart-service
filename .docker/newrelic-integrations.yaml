@@ -2,7 +2,7 @@ integrations:
   - name: nri-postgresql
     env:
       PG_HOST: ${PG_HOST}
-      PG_PORT: ${PG_PORT}
+      PG_PORT: 5432
       PG_USER: ${PG_USER}
       PG_PASSWORD: ${PG_PASSWORD}
       PG_DATABASE: ${PG_DATABASE}

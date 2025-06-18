@@ -1,8 +1,5 @@
 FROM php:8.2-fpm
 
-#ARG NEW_RELIC_LICENSE_KEY
-#ENV NEW_RELIC_APPNAME=CartService-Laravel
-
 RUN apt-get update && apt-get install -y \
     gnupg lsb-release wget curl unzip libpq-dev libzip-dev zip libonig-dev libxml2-dev git \
     && docker-php-ext-install pdo pdo_pgsql mbstring zip \

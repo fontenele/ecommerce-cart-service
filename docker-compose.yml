@@ -63,11 +63,12 @@ services:
         cap_add:
             - SYS_PTRACE
         environment:
+            - NRIA_ACCOUNT_ID=${NEW_RELIC_ACCOUNT_ID}
             - NRIA_LICENSE_KEY=${NEW_RELIC_LICENSE_KEY}
+            - NRIA_API_KEY=${NEW_RELIC_USER_KEY}
             - NRIA_DISPLAY_NAME=cart-service
             - NRIA_OVERRIDE_HOST_ROOT=/host
-            - PG_HOST=db
-            - PG_PORT=5432
+            - PG_HOST=localhost
             - PG_USER=${POSTGRES_USER}
             - PG_PASSWORD=${POSTGRES_PASSWORD}
             - PG_DATABASE=${POSTGRES_DB}
