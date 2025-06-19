@@ -42,6 +42,7 @@ docker-compose --env-file .env.compose down
 - URL: [http://localhost:8000](http://localhost:8000)
 - Health Check URL: [http://localhost:8000/up](http://localhost:8000/up)
 - Coverage URL: [http://localhost:8000/coverage/index.html](http://localhost:8000/coverage/index.html)
+- Swagger: [http://localhost:8000/api/documentation](http://localhost:8000/api/documentation)
 
 ### CI/CD Secret Variables
 - DB
