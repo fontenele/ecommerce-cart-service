@@ -1,0 +1,214 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Cart Service",
+        "description": "Cart Service API documentation",
+        "contact": {
+            "name": "Guilherme Fontenele",
+            "url": "https://github.com/fontenele",
+            "email": "guilherme@fontenele.net"
+        },
+        "version": "1.0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:8000",
+            "description": "CartService"
+        }
+    ],
+    "paths": {
+        "/api/checkout": {
+            "post": {
+                "tags": [
+                    "Checkout Controller"
+                ],
+                "summary": "Checkout Cart",
+                "description": "Checkout Cart",
+                "operationId": "checkout",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "method"
+                                ],
+                                "properties": {
+                                    "method": {
+                                        "$ref": "#/components/schemas/PaymentMethodEnum"
+                                    },
+                                    "card_holder_name": {
+                                        "description": "Credit Card Holder Name",
+                                        "type": "string",
+                                        "example": "James Howlett",
+                                        "nullable": true
+                                    },
+                                    "card_number": {
+                                        "description": "Credit Card Number",
+                                        "type": "string",
+                                        "example": "9112311334411221",
+                                        "nullable": true
+                                    },
+                                    "card_expiration": {
+                                        "description": "Credit Card Date Exp",
+                                        "type": "string",
+                                        "example": "01/32",
+                                        "nullable": true
+                                    },
+                                    "card_cvv": {
+                                        "description": "Credit Card CVV",
+                                        "type": "string",
+                                        "example": "123",
+                                        "nullable": true
+                                    },
+                                    "pix_key": {
+                                        "description": "PIX Key",
+                                        "type": "string",
+                                        "example": "james@xmen.org",
+                                        "nullable": true
+                                    },
+                                    "installments": {
+                                        "description": "Installments",
+                                        "type": "number",
+                                        "example": 1,
+                                        "nullable": true
+                                    },
+                                    "items": {
+                                        "description": "items",
+                                        "type": "array",
+                                        "items": {
+                                            "properties": {
+                                                "name": {
+                                                    "description": "Product Name",
+                                                    "type": "string"
+                                                },
+                                                "unit_price": {
+                                                    "description": "Unit Price",
+                                                    "type": "number"
+                                                },
+                                                "quantity": {
+                                                    "description": "Quantity",
+                                                    "type": "number"
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "example": [
+                                            {
+                                                "name": "Shirt",
+                                                "unit_price": 29.99,
+                                                "quantity": 2
+                                            }
+                                        ]
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Order",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Order"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Resource not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "PaymentMethodEnum": {
+                "type": "string",
+                "enum": [
+                    "pix",
+                    "credit_card"
+                ]
+            },
+            "Order": {
+                "title": "Order",
+                "description": "Orders",
+                "properties": {
+                    "method": {
+                        "type": "string"
+                    },
+                    "card_holder_name": {
+                        "type": "string"
+                    },
+                    "card_number": {
+                        "type": "string"
+                    },
+                    "card_expiration": {
+                        "type": "string"
+                    },
+                    "card_cvv": {
+                        "type": "string"
+                    },
+                    "pix_key": {
+                        "type": "string"
+                    },
+                    "installments": {
+                        "type": "number"
+                    },
+                    "total": {
+                        "type": "number"
+                    },
+                    "items": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/OrderItem"
+                        }
+                    }
+                },
+                "type": "object"
+            },
+            "OrderItem": {
+                "title": "OrderItem",
+                "description": "Order Items",
+                "properties": {
+                    "order_id": {
+                        "type": "number"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "unit_price": {
+                        "type": "number"
+                    },
+                    "quantity": {
+                        "type": "number"
+                    }
+                },
+                "type": "object"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Checkout Controller",
+            "description": "Checkout Controller"
+        }
+    ]
+}
