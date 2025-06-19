@@ -2,7 +2,7 @@ FROM php:8.2-fpm
 
 RUN apt-get update && apt-get install -y \
     gnupg lsb-release wget curl unzip libpq-dev libzip-dev zip libonig-dev libxml2-dev git \
-    && docker-php-ext-install pdo pdo_pgsql mbstring zip \
+    && docker-php-ext-install pdo pdo_pgsql mbstring zip bcmath \
     && pecl install xdebug && docker-php-ext-enable xdebug
 
 RUN wget -O - https://download.newrelic.com/548C16BF.gpg | gpg --dearmor -o /usr/share/keyrings/newrelic-archive-keyring.gpg \
